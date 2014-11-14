@@ -43,32 +43,50 @@ str(original_data)
 
 ## What is the mean total number of steps taken per day?
 
-```{r mean_steps_per_day}
+```{r daily_activity}
 daily_activity <- original_data %>%
     group_by(date) %>%
     summarize(total_steps = sum(steps, na.rm = TRUE))
 
 mean_steps <- mean(daily_activity$total_steps)
-mean_steps_color <- "red"
+mean_color <- "red"
 median_steps <- median(daily_activity$total_steps)
-median_steps_color <- "blue"
+median_color <- "blue"
     
 ggplot(daily_activity, aes(x = date, y = total_steps)) +
     geom_bar(stat = "identity") +
-    geom_hline(yintercept = mean_steps, colour = mean_steps_color) +
-    geom_hline(yintercept = median_steps, colour = median_steps_color) +
+    geom_hline(yintercept = mean_steps, colour = mean_color) +
+    geom_hline(yintercept = median_steps, colour = median_color) +
     xlab("Date") +
     ylab("Total number of steps")
 ```
 
-The mean and median total number of steps taken per day are
-`r mean_steps` (represented with the `r mean_steps_color` line) and 
-`r median_steps` (represented with the `r median_steps_color` line),
+The mean and median total number of steps taken per day are `r mean_steps` 
+(`r mean_color` line) and `r median_steps` (`r median_color` line),
 respectively.
 
 ## What is the average daily activity pattern?
 
+```{r activity_pattern}
+activity_pattern <- original_data %>%
+    group_by(interval) %>%
+    summarize(average_steps = mean(steps, na.rm = TRUE))
 
+i <- which.max(activity_pattern$average_steps)
+max_average_steps <- activity_pattern$average_steps[i]
+max_interval <- activity_pattern$interval[i]
+max_color <- "red"
+
+ggplot(activity_pattern, aes(x = interval, y = average_steps)) +
+    geom_line() +
+    geom_point(x = max_interval, y = max_average_steps,
+               color = max_color, size = 4) +
+    xlab("Interval") +
+    ylab("Average number of steps")
+```
+
+The maximum average number of steps is reached at the 5-minute interval 
+`r max_interval` (`r max_color` dot).
 
 ## Imputing missing values
 
