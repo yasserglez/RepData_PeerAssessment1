@@ -5,6 +5,15 @@ output:
     keep_md: true
 ---
 
+## Loading the required packages
+
+The following packages are required to perform the analysis:
+
+```{r load_packages}
+library("dplyr", warn.conflicts = FALSE)
+library("lubridate")
+library("ggplot2")
+```
 
 ## Loading and preprocessing the data
 
