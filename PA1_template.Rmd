@@ -41,9 +41,30 @@ original_data <- mutate(original_data, date = ymd(date))
 str(original_data)
 ```
 
-## What is mean total number of steps taken per day?
+## What is the mean total number of steps taken per day?
 
+```{r mean_steps_per_day}
+daily_activity <- original_data %>%
+    group_by(date) %>%
+    summarize(total_steps = sum(steps, na.rm = TRUE))
 
+mean_steps <- mean(daily_activity$total_steps)
+mean_steps_color <- "red"
+median_steps <- median(daily_activity$total_steps)
+median_steps_color <- "blue"
+    
+ggplot(daily_activity, aes(x = date, y = total_steps)) +
+    geom_bar(stat = "identity") +
+    geom_hline(yintercept = mean_steps, colour = mean_steps_color) +
+    geom_hline(yintercept = median_steps, colour = median_steps_color) +
+    xlab("Date") +
+    ylab("Total number of steps")
+```
+
+The mean and median total number of steps taken per day are
+`r mean_steps` (represented with the `r mean_steps_color` line) and 
+`r median_steps` (represented with the `r median_steps_color` line),
+respectively.
 
 ## What is the average daily activity pattern?
 
