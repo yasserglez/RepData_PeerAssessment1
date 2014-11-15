@@ -25,7 +25,7 @@ library("ggplot2")
 
 ## Loading and preprocessing the data
 
-First, the CSV file is extracated from the ZIP file and the data 
+First, the CSV file is extracted from the ZIP file and the data 
 is loaded into a `data.frame` called `original_data`.
 
 ```{r load_data}
