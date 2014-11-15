@@ -24,7 +24,7 @@ library("ggplot2")
 ## Loading and preprocessing the data
 
 First, the CSV file is extracated from the ZIP file and the data 
-is loaded into a `data.frame` object named `original_data`.
+is loaded into a `data.frame` called `original_data`.
 
 ```{r load_data}
 zip_file <- "activity.zip"
@@ -43,7 +43,7 @@ str(original_data)
 
 ## What is the mean total number of steps taken per day?
 
-```{r daily_activity}
+```{r daily_activity_original}
 daily_activity <- original_data %>%
     group_by(date) %>%
     summarize(total_steps = sum(steps, na.rm = TRUE))
@@ -57,6 +57,7 @@ ggplot(daily_activity, aes(x = date, y = total_steps)) +
     geom_bar(stat = "identity") +
     geom_hline(yintercept = mean_steps, colour = mean_color) +
     geom_hline(yintercept = median_steps, colour = median_color) +
+    ggtitle("Original dataset") +
     xlab("Date") +
     ylab("Total number of steps")
 ```
@@ -90,6 +91,64 @@ The maximum average number of steps is reached at the 5-minute interval
 
 ## Imputing missing values
 
+Calculating the total number of missing values in the dataset:
 
+```{r missing_values}
+missing_values <- sum(!complete.cases(original_data))
+```
+
+There are `r missing_values` missing values in the dataset. These values will
+be filled using the median for the 5-minute interval in question across the 
+entire dataset. First, the substitutes for each 5-minute interval are computed:
+
+```{r substitutes}
+substitution_data <- original_data %>%
+    group_by(interval) %>%
+    summarize(substitute = median(steps, na.rm = TRUE))
+```
+
+Then, a new `data.frame` called `filled_data` is created from `original_data` 
+but with the missing data filled in:
+
+```{r filled_data}
+complete_data <- original_data %>% filter(!is.na(steps))
+
+substituted_data <- original_data %>% filter(is.na(steps)) %>%
+    left_join(substitution_data, by = "interval") %>%
+    mutate(steps = substitute) %>%
+    select(steps, date, interval)
+
+filled_data <- rbind(complete_data, substituted_data)
+```
+
+Re-create the histogram of the total number of steps taken each day using
+the filled data.
+
+```{r daily_activity_filled}
+daily_activity <- filled_data %>%
+    group_by(date) %>%
+    summarize(total_steps = sum(steps))
+
+mean_steps <- mean(daily_activity$total_steps)
+mean_color <- "red"
+median_steps <- median(daily_activity$total_steps)
+median_color <- "blue"
+
+ggplot(daily_activity, aes(x = date, y = total_steps)) +
+    geom_bar(stat = "identity") +
+    geom_hline(yintercept = mean_steps, colour = mean_color) +
+    geom_hline(yintercept = median_steps, colour = median_color) +
+    ggtitle("Dataset with missing values filled-in") +
+    xlab("Date") +
+    ylab("Total number of steps")
+```
+
+In the filled dataset the mean and median total number of steps taken 
+per day are `r mean_steps` (`r mean_color` line) and `r median_steps`
+(`r median_color` line), respectively. The mean is larger than the value
+from the first part of the assignment, but the median is the same.
+Since the imputed values are equal or greater than zero, the total number of 
+steps taken each day will be equal or greater than the values computed 
+for the original dataset.
 
 ## Are there differences in activity patterns between weekdays and weekends?
