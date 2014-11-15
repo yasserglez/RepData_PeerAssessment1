@@ -152,3 +152,25 @@ steps taken each day will be equal or greater than the values computed
 for the original dataset.
 
 ## Are there differences in activity patterns between weekdays and weekends?
+
+```{r activity_pattern_day_of_week}
+day_of_week <- function (date) {
+    weekend_days <- c("Saturday", "Sunday")
+    ifelse(weekdays(date) %in% weekend_days, "weekend", "weekday")
+}
+
+activity_pattern <- filled_data %>%
+    mutate(day_of_week = day_of_week(date)) %>%
+    group_by(day_of_week, interval) %>%
+    summarize(average_steps = mean(steps, na.rm = TRUE))
+
+ggplot(activity_pattern, aes(x = interval, y = average_steps)) +
+    geom_line() +
+    facet_grid(day_of_week ~ .) +
+    xlab("Interval") +
+    ylab("Average number of steps")
+```
+
+The maximum average number of steps is higher during weekdays (around 200)
+than on weekends (around 150). However, the data suggests an increase of the
+activity on weekends between the 1000 and 2000 5-minute intervals.
