@@ -199,5 +199,5 @@ ggplot(activity_pattern, aes(x = interval, y = average_steps)) +
 ![plot of chunk activity_pattern_day_of_week](figure/activity_pattern_day_of_week-1.png) 
 
 The maximum average number of steps is higher during weekdays (around 200)
-than on weekends (around 150). However, the data suggests an increase of the
+than on weekends (around 150). However, the data suggest an increase of the
 activity on weekends between the 1000 and 2000 5-minute intervals.
