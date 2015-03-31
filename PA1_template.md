@@ -1,9 +1,4 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 This assignment makes use of [data from a personal activity monitoring device][1]. 
 This device collects data at 5 minute intervals throughout the day. The data 
@@ -62,24 +57,19 @@ daily_activity <- original_data %>%
     summarize(total_steps = sum(steps, na.rm = TRUE))
 
 mean_steps <- mean(daily_activity$total_steps)
-mean_color <- "red"
 median_steps <- median(daily_activity$total_steps)
-median_color <- "blue"
     
-ggplot(daily_activity, aes(x = date, y = total_steps)) +
-    geom_bar(stat = "identity") +
-    geom_hline(yintercept = mean_steps, colour = mean_color) +
-    geom_hline(yintercept = median_steps, colour = median_color) +
+ggplot(daily_activity, aes(x = total_steps)) +
+    geom_histogram(binwidth = 1000) +
     ggtitle("Original dataset") +
-    xlab("Date") +
-    ylab("Total number of steps")
+    xlab("Total number of steps") +
+    ylab("Count")
 ```
 
-![plot of chunk daily_activity_original](figure/daily_activity_original-1.png) 
+![](fig/daily_activity_original-1.png) 
 
 The mean and median total number of steps taken per day are 9354.2295082 
-(red line) and 10395 (blue line),
-respectively.
+and 10395, respectively.
 
 ## What is the average daily activity pattern?
 
@@ -102,7 +92,7 @@ ggplot(activity_pattern, aes(x = interval, y = average_steps)) +
     ylab("Average number of steps")
 ```
 
-![plot of chunk activity_pattern](figure/activity_pattern-1.png) 
+![](fig/activity_pattern-1.png) 
 
 The maximum average number of steps is reached at the 5-minute interval 
 835 (red dot).
@@ -152,28 +142,23 @@ daily_activity <- filled_data %>%
     summarize(total_steps = sum(steps))
 
 mean_steps <- mean(daily_activity$total_steps)
-mean_color <- "red"
 median_steps <- median(daily_activity$total_steps)
-median_color <- "blue"
 
-ggplot(daily_activity, aes(x = date, y = total_steps)) +
-    geom_bar(stat = "identity") +
-    geom_hline(yintercept = mean_steps, colour = mean_color) +
-    geom_hline(yintercept = median_steps, colour = median_color) +
+ggplot(daily_activity, aes(x = total_steps)) +
+    geom_histogram(binwidth = 1000) +
     ggtitle("Dataset with missing values filled-in") +
-    xlab("Date") +
-    ylab("Total number of steps")
+    xlab("Total number of steps") +
+    ylab("Count")
 ```
 
-![plot of chunk daily_activity_filled](figure/daily_activity_filled-1.png) 
+![](fig/daily_activity_filled-1.png) 
 
 In the filled dataset the mean and median total number of steps taken 
-per day are 9503.8688525 (red line) and 10395
-(blue line), respectively. The mean is larger than the value
-from the first part of the assignment, but the median is the same.
-Since the imputed values are equal or greater than zero, the total number of 
-steps taken each day will be equal or greater than the values computed 
-for the original dataset.
+per day are 9503.8688525 and 10395, respectively. 
+The mean is larger than the value from the first part of the assignment, 
+but the median is the same. Since the imputed values are equal or greater 
+than zero, the total number of steps taken each day will be equal or greater 
+than the values computed for the original dataset.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
@@ -196,7 +181,7 @@ ggplot(activity_pattern, aes(x = interval, y = average_steps)) +
     ylab("Average number of steps")
 ```
 
-![plot of chunk activity_pattern_day_of_week](figure/activity_pattern_day_of_week-1.png) 
+![](fig/activity_pattern_day_of_week-1.png) 
 
 The maximum average number of steps is higher during weekdays (around 200)
 than on weekends (around 150). However, the data suggest an increase of the

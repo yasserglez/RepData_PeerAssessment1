@@ -45,7 +45,7 @@ str(original_data)
 
 ## What is the mean total number of steps taken per day?
 
-```{r daily_activity_original}
+```{r daily_activity_original,fig.path="fig/"}
 daily_activity <- original_data %>%
     group_by(date) %>%
     summarize(total_steps = sum(steps, na.rm = TRUE))
@@ -65,7 +65,7 @@ and `r median_steps`, respectively.
 
 ## What is the average daily activity pattern?
 
-```{r activity_pattern}
+```{r activity_pattern,fig.path="fig/"}
 activity_pattern <- original_data %>%
     group_by(interval) %>%
     summarize(average_steps = mean(steps, na.rm = TRUE))
@@ -121,7 +121,7 @@ filled_data <- rbind(complete_data, substituted_data)
 Re-create the histogram of the total number of steps taken each day using
 the filled data.
 
-```{r daily_activity_filled}
+```{r daily_activity_filled,fig.path="fig/"}
 daily_activity <- filled_data %>%
     group_by(date) %>%
     summarize(total_steps = sum(steps))
@@ -145,7 +145,7 @@ than the values computed for the original dataset.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r activity_pattern_day_of_week}
+```{r activity_pattern_day_of_week,fig.path="fig/"}
 day_of_week <- function (date) {
     weekend_days <- c("Saturday", "Sunday")
     ifelse(weekdays(date) %in% weekend_days, "weekend", "weekday")
