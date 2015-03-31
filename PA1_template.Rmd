@@ -51,22 +51,17 @@ daily_activity <- original_data %>%
     summarize(total_steps = sum(steps, na.rm = TRUE))
 
 mean_steps <- mean(daily_activity$total_steps)
-mean_color <- "red"
 median_steps <- median(daily_activity$total_steps)
-median_color <- "blue"
     
-ggplot(daily_activity, aes(x = date, y = total_steps)) +
-    geom_bar(stat = "identity") +
-    geom_hline(yintercept = mean_steps, colour = mean_color) +
-    geom_hline(yintercept = median_steps, colour = median_color) +
+ggplot(daily_activity, aes(x = total_steps)) +
+    geom_histogram(binwidth = 1000) +
     ggtitle("Original dataset") +
-    xlab("Date") +
-    ylab("Total number of steps")
+    xlab("Total number of steps") +
+    ylab("Count")
 ```
 
 The mean and median total number of steps taken per day are `r mean_steps` 
-(`r mean_color` line) and `r median_steps` (`r median_color` line),
-respectively.
+and `r median_steps`, respectively.
 
 ## What is the average daily activity pattern?
 
@@ -132,26 +127,21 @@ daily_activity <- filled_data %>%
     summarize(total_steps = sum(steps))
 
 mean_steps <- mean(daily_activity$total_steps)
-mean_color <- "red"
 median_steps <- median(daily_activity$total_steps)
-median_color <- "blue"
 
-ggplot(daily_activity, aes(x = date, y = total_steps)) +
-    geom_bar(stat = "identity") +
-    geom_hline(yintercept = mean_steps, colour = mean_color) +
-    geom_hline(yintercept = median_steps, colour = median_color) +
+ggplot(daily_activity, aes(x = total_steps)) +
+    geom_histogram(binwidth = 1000) +
     ggtitle("Dataset with missing values filled-in") +
-    xlab("Date") +
-    ylab("Total number of steps")
+    xlab("Total number of steps") +
+    ylab("Count")
 ```
 
 In the filled dataset the mean and median total number of steps taken 
-per day are `r mean_steps` (`r mean_color` line) and `r median_steps`
-(`r median_color` line), respectively. The mean is larger than the value
-from the first part of the assignment, but the median is the same.
-Since the imputed values are equal or greater than zero, the total number of 
-steps taken each day will be equal or greater than the values computed 
-for the original dataset.
+per day are `r mean_steps` and `r median_steps`, respectively. 
+The mean is larger than the value from the first part of the assignment, 
+but the median is the same. Since the imputed values are equal or greater 
+than zero, the total number of steps taken each day will be equal or greater 
+than the values computed for the original dataset.
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
